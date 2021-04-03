@@ -1,23 +1,60 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import UserList from './components/UserList';
+import UserProfile from './components/UserProfile';
+import UpdateProfile from './components/UpdateProfile';
+
 
 function App() {
+  const [userState, setUserState] = useState({
+    dataList: [],
+  })
+  const [update,setUpdate]=useState({
+    updateObj:{
+
+    }
+  })
+
+  const handleUserProfile = (data) => {
+    console.log(data)
+    const dataList = [...userState.dataList]
+    dataList.push(data)
+    setUserState({
+      dataList
+    })
+
+  }
+  const handleRemove = (i) => {
+    console.log(i)
+    const dataList = [...userState.dataList];
+    dataList.splice(i, 1);
+    setUserState({ dataList })
+  }
+  const handleUpdate = (ele, i) => {
+    console.log(ele, i)
+    setUpdate({
+      "updateObj": {
+        "ele": ele,
+        "i": i
+      }
+
+    })
+  }
+  const handleNewUpdate=(index,newValue)=>{
+    console.log(index,newValue);
+    const dataList = [...userState.dataList];
+     dataList[index]=newValue;
+     setUserState({
+        dataList
+     })
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <UserProfile callback={handleUserProfile} />
+      <UserList data={userState.dataList} callback={handleRemove} callbackUpdate={handleUpdate} />
+      <UpdateProfile  callback={handleNewUpdate} dataUpdate={update}/>
+
+
     </div>
   );
 }
