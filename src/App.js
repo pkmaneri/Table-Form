@@ -3,14 +3,22 @@ import './App.css';
 import UserList from './components/UserList';
 import UserProfile from './components/UserProfile';
 import UpdateProfile from './components/UpdateProfile';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import Navbar from './components/Navbar';
+
 
 
 function App() {
   const [userState, setUserState] = useState({
     dataList: [],
   })
-  const [update,setUpdate]=useState({
-    updateObj:{
+  const [update, setUpdate] = useState({
+    updateObj: {
 
     }
   })
@@ -40,20 +48,38 @@ function App() {
 
     })
   }
-  const handleNewUpdate=(index,newValue)=>{
-    console.log(index,newValue);
+  const handleNewUpdate = (index, newValue) => {
+    console.log(index, newValue);
     const dataList = [...userState.dataList];
-     dataList[index]=newValue;
-     setUserState({
-        dataList
-     })
+    dataList[index] = newValue;
+    setUserState({
+      dataList
+    })
   }
   return (
     <div className="App">
-      <UserProfile callback={handleUserProfile} />
-      <UserList data={userState.dataList} callback={handleRemove} callbackUpdate={handleUpdate} />
-      <UpdateProfile  callback={handleNewUpdate} dataUpdate={update}/>
-
+      <Router>
+        <Navbar />
+        <Switch>
+          <div className="row">
+            <div className="col">
+              <Route exect path="/">
+                <UserProfile callback={handleUserProfile} />
+              </Route>
+            </div>
+            <div className="col">
+              <Route exect path="/userList">
+                <UserList data={userState.dataList} callback={handleRemove} callbackUpdate={handleUpdate} />
+              </Route>
+            </div>
+            <div className="col">
+              <Route exect path="/updateProfile">
+                <UpdateProfile callback={handleNewUpdate} dataUpdate={update} />
+              </Route>
+            </div>
+          </div>
+        </Switch>
+      </Router>
 
     </div>
   );
