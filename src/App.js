@@ -11,36 +11,47 @@ import {
 } from "react-router-dom";
 import Navbar from './components/Navbar';
 
-
-
 function App() {
-  const [userState, setUserState] = useState({
-    dataList: [],
-  })
-  const [update, setUpdate] = useState({
-    updateObj: {
+  const initialState = {
+    "dataList": [],
+    "updateObj": {
 
     }
-  })
+  }
+  const [userState, setUserState] = useState(initialState)
 
   const handleUserProfile = (data) => {
+    if (data !== undefined) {
+      const dataList = [...userState.dataList];
+      const updateObj =userState.updateObj !==undefined ?
+       JSON.parse(JSON.stringify(userState.updateObj)):{};
+      dataList.push(data)
+      setUserState({
+        "dataList": dataList,
+        "updateObj": updateObj
+      })
+    }
     console.log(data)
-    const dataList = [...userState.dataList]
-    dataList.push(data)
-    setUserState({
-      dataList
-    })
+
 
   }
   const handleRemove = (i) => {
     console.log(i)
     const dataList = [...userState.dataList];
     dataList.splice(i, 1);
-    setUserState({ dataList })
+
+    const updateObj = userState.updateObj !== undefined ?
+      JSON.parse(JSON.stringify(userState.updateObj)) : {};
+    setUserState({
+      "dataList": dataList,
+      "updateObj": updateObj
+    })
   }
   const handleUpdate = (ele, i) => {
     console.log(ele, i)
-    setUpdate({
+    const dataList = [...userState.dataList];
+    setUserState({
+      "dataList": dataList,
       "updateObj": {
         "ele": ele,
         "i": i
@@ -61,23 +72,15 @@ function App() {
       <Router>
         <Navbar />
         <Switch>
-          <div className="row">
-            <div className="col">
-              <Route exect path="/">
-                <UserProfile callback={handleUserProfile} />
-              </Route>
-            </div>
-            <div className="col">
-              <Route exect path="/userList">
-                <UserList data={userState.dataList} callback={handleRemove} callbackUpdate={handleUpdate} />
-              </Route>
-            </div>
-            <div className="col">
-              <Route exect path="/updateProfile">
-                <UpdateProfile callback={handleNewUpdate} dataUpdate={update} />
-              </Route>
-            </div>
-          </div>
+          <Route exact path="/userList">
+            <UserList data={userState.dataList} callback={handleRemove} callbackUpdate={handleUpdate} />
+          </Route>
+          <Route exact path="/updateProfile">
+            <UpdateProfile callback={handleNewUpdate} dataUpdate={userState.updateObj} />
+          </Route>
+          <Route exact path="/">
+            <UserProfile callback={handleUserProfile} />
+          </Route>
         </Switch>
       </Router>
 

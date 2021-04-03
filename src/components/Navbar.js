@@ -5,23 +5,25 @@ const Navbar = () => {
     return (
         <>
             <table className="table">
-                <tr>
-                    <td>
-                        <Link exect to="/">
-                            <li className="list-group-item">UserProfile</li>
-                        </Link>
-                    </td>
-                    <td>
-                        <Link exect to="/userList">
-                            <li className="list-group-item">UserList</li>
-                        </Link>
-                    </td>
-                    <td>
-                        <Link exect to="/updateProfile">
-                            <li className="list-group-item">UpdateProfile </li>
-                        </Link>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr>
+                        <td>
+                            <Link to="/">
+                                <li className="list-group-item active">Create User</li>
+                            </Link>
+                        </td>
+                        <td>
+                            <Link to="/userList">
+                                <li className="list-group-item active">List of User</li>
+                            </Link>
+                        </td>
+                        <td>
+                            <Link to="/updateProfile">
+                                <li className="list-group-item active">Update User </li>
+                            </Link>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
 
         </>
